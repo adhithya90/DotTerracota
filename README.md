@@ -1,8 +1,8 @@
 # Dot Terracota
 
-An Android app that takes one moodboard — warm terracotta minimalism meets industrial hardware — and rebuilds the whole thing as running code. Jetpack Compose for the UI, AGSL shaders for the materials.
+I saw a pretty terracotta moodboard and got completely carried away. This is an Android app where everything — the metal, the glowing tubes, the little planet, the clay knob — is drawn with code. There is not a single PNG in this repo. I checked.
 
-There are no image assets in this repo. Every plate, planet, glow tube and speck of grain is computed at runtime. If the mockup had brushed metal, I had to write brushed metal. If it had a clay planet, I had to light a sphere.
+Compose draws the UI bits. AGSL shaders draw the stuff that pretends to be physical. That's the whole trick.
 
 <p align="center">
   <img src="art/tour.gif" width="240" alt="Swiping through all twelve screens" />
@@ -12,18 +12,18 @@ There are no image assets in this repo. Every plate, planet, glow tube and speck
 
 ## Play with it
 
-Static screens are only half the point. Most things in here respond to touch, and I tuned them until they were fun to fidget with.
+Everything here is poke-able. This is the part I'm most pleased with and also the part with the least practical value.
 
 | | |
 |---|---|
-| <img src="art/subwoofer.gif" width="300" /> | **The subwoofer.** Tap the plate and the membrane pumps — the perforation grid dilates, the bass port breathes, and the glow tubes kick brighter, all driven by a bouncy spring feeding a shader uniform. Tap the terracotta disc and the lights switch off, fading to the milky gray of an unpowered LED tube. |
-| <img src="art/knob.gif" width="300" /> | **The knob.** Drag anywhere on it to rotate. The clay face and indicator spin while the lighting stays put, which is what sells it as a physical object. Travel is clamped like a real volume pot, with haptic detents every ten steps. |
-| <img src="art/fidget.gif" width="300" /> | **The type.** Tap FUTURE IS WARM and the dots pop away from your finger, over-swell, and jiggle back. Drag and they trail around your fingertip like magnetized beads. Zero practical purpose. |
-| <img src="art/system.gif" width="300" /> | **The controls.** The quick toggles flip states with animated color and a press bounce. The brightness bar is a working slider — drag it and the sun icon dims with the level, which kicks AUTO off. |
+| <img src="art/subwoofer.gif" width="300" /> | **The subwoofer.** Tap it and it goes *thump*. The membrane pumps, the port breathes, the lights kick. Tap the orange circle and the lights turn off. That's it. That's the feature. It's weirdly satisfying. |
+| <img src="art/knob.gif" width="300" /> | **The knob.** You can spin it. It clicks as it turns. The clay rotates but the lighting stays still, which is the thing that makes your brain accept it as an object. It controls a number that does nothing. |
+| <img src="art/fidget.gif" width="300" /> | **The type.** Poke the dots and they run away from your finger, then wobble back. Drag and they follow you around like confused ducklings. I have spent an embarrassing amount of time doing this. |
+| <img src="art/system.gif" width="300" /> | **The controls.** The toggles toggle. The slider slides. The little sun dims when you drag brightness down, which nobody asked for, but here we are. |
 
 ## The screens
 
-Twelve of them, one swipe apart. A hero, a lock screen, and one screen per artifact of the design language.
+Twelve of them, one swipe apart. This started as one giant poster crammed onto a single screen, which looked impressive and read like an eye test. So everything got its own room.
 
 <p align="center">
   <img src="art/s01_home.png" width="160" />
@@ -40,20 +40,20 @@ Twelve of them, one swipe apart. A hero, a lock screen, and one screen per artif
 
 ## How it's drawn
 
-Two kinds of rendering, split by what they're good at:
+Two tools, split by vibe:
 
-**AGSL shaders** (`ui/Shaders.kt`) handle anything that should look like a material: the brushed metal plates with their seams, screws and emissive tubes, the clay planet, the clay texture on the knob, the anodized metal swatch, the Mars landscape in the player, and the gradient-and-grain backgrounds. They're all resolution independent, so the same shader renders a small card and a full screen without a pixel of difference. Interactive ones take extra uniforms — `uPulse` for the subwoofer excursion, `uLight` for the tubes — driven from Compose by spring animations.
+**Shaders** for anything that should feel like a material — brushed metal, screws, glow tubes, clay, the planet, the Mars landscape in the player. They're resolution independent, so the same shader draws a tiny card or a full screen and doesn't care. The interactive ones take a couple of extra uniforms (`uPulse`, `uLight`) that Compose feeds from spring animations. That's the entire subwoofer.
 
-**Canvas drawing** handles everything that should look like UI: a 5×7 dot-matrix font I built for all the pixelated type (rendered dot by dot, with a radial-gradient glow where it needs one), dot progress bars, the equalizer, orbit rings, every icon, and the micro-interaction animations.
+**Canvas** for anything that should feel like UI — the dot matrix font (a 5×7 grid I typed in by hand, letter by letter, like it's 1982), the progress dots, the equalizer, the icons, the spinny bits.
 
-One layout trick worth mentioning: each screen is designed in fixed "design units" and `LocalDensity` is rescaled so those units fill the screen width. Components carry no responsive logic at all, and the same composables render at any size — the poster this started as used the exact same code, just smaller.
+One layout trick: every screen is designed in made-up units, and I rescale `LocalDensity` so those units fill whatever screen you have. No responsive logic anywhere. It's a poster trick. It works great.
 
 ## Running it
 
-Open in Android Studio and run, or:
+Open it in Android Studio and press the green triangle. Or:
 
 ```
 ./gradlew assembleDebug
 ```
 
-Needs minSdk 33 — `RuntimeShader` is an API 33 thing. No dependencies beyond Compose itself.
+minSdk is 33, because `RuntimeShader`. Sorry.

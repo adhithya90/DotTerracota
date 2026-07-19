@@ -45,6 +45,7 @@ import com.designlens.core.MonoText
 import com.designlens.core.ShaderPanel
 import com.dotterracota.ui.DotTerracotaPreview
 import com.softmachine.ui.SoftMachinePreview
+import com.pixelcraft.ui.PixelCraftPreview
 import kotlin.random.Random
 
 private val bg = Color(0xFF111113)
@@ -80,13 +81,13 @@ fun LandingScreen(onOpen: (Int) -> Unit) {
         }
         Spacer(Modifier.height(14.dp))
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(14.dp)) {
-            LensCard("03", "LIQUID\nCHROME", "Fluid. Futuristic.\nWhere technology feels\nlike liquid metal.",
+            LensCard("03", "PIXEL\nCRAFT", "Playful by design.\nPrecision by pixels.",
+                Modifier.weight(1f), onTap = { onOpen(Lens.PIXEL_CRAFT) }) {
+                PixelCraftPreview(Modifier.fillMaxSize())
+            }
+            LensCard("04", "LIQUID\nCHROME", "Fluid. Futuristic.\nWhere technology feels\nlike liquid metal.",
                 Modifier.weight(1f), soon = true) {
                 ShaderPanel(CHROME_THUMB, Modifier.fillMaxSize(), animated = true)
-            }
-            LensCard("04", "PIXEL\nCRAFT", "Playful. Nostalgic.\nPixel art reimagined\nfor today.",
-                Modifier.weight(1f), soon = true) {
-                PixelThumb()
             }
         }
         Spacer(Modifier.height(14.dp))
@@ -283,7 +284,7 @@ private fun SurpriseRow(onOpen: (Int) -> Unit) {
                 .clip(RoundedCornerShape(50))
                 .border(0.7.dp, Color(0x44E9E4DA), RoundedCornerShape(50))
                 .clickable(interactionSource = null, indication = null) {
-                    onOpen(if (Random.nextBoolean()) Lens.TERRACOTA else Lens.SOFT_MACHINE)
+                    onOpen(listOf(Lens.TERRACOTA, Lens.SOFT_MACHINE, Lens.PIXEL_CRAFT).random())
                 }
                 .padding(horizontal = 14.dp, vertical = 9.dp)
         ) {

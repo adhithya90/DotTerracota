@@ -1,13 +1,14 @@
 # Design Lens
 
-I saw a pretty terracotta moodboard and got completely carried away. Then it happened again with a lavender one. So now this is Design Lens: a small gallery app where each visual style is rebuilt entirely as running code. Jetpack Compose for the UI, AGSL shaders for the materials. There isn't a single PNG in the app.
+I saw a pretty terracotta moodboard and got completely carried away. Then it happened again with a lavender one. Then a pixel art one. So now this is Design Lens: a small gallery app where each visual style is rebuilt entirely as running code. Jetpack Compose for the UI, AGSL shaders for the materials. There isn't a single PNG in the app.
 
 You land on a dark page, pick a lens, and swipe through twelve screens of it. Each card on the landing page is a live render, not a thumbnail.
 
 <p align="center">
-  <img src="art/landing.png" width="240" alt="The landing page" />
-  <img src="art/s00_hero.png" width="240" alt="Dot Terracota hero" />
-  <img src="art/sm_hero.png" width="240" alt="Soft Machine hero" />
+  <img src="art/landing.png" width="180" alt="The landing page" />
+  <img src="art/s00_hero.png" width="180" alt="Dot Terracota hero" />
+  <img src="art/sm_hero.png" width="180" alt="Soft Machine hero" />
+  <img src="art/px_hero.png" width="180" alt="Pixel Craft hero" />
 </p>
 
 ## Dot Terracota
@@ -46,13 +47,31 @@ Lavender neumorphism: warm greige, mauve, Montserrat, everything molded and sque
   <img src="art/sm_color.png" width="160" />
 </p>
 
+## Pixel Craft
+
+Playful pixel art: a cat, a sailboat, chunky toggles, hard shadows. No shaders in this one at all. Every sprite is a little grid of characters typed into the source, and a seeded random number generator places every star and window so the city looks the same every time you open it.
+
+| | |
+|---|---|
+| <img src="art/px_buttons.gif" width="300" /> | **The buttons.** Nothing eases in this style. Press a button and it drops onto its own shadow in a single frame, then pops back up. The slider doesn't slide, it snaps between 24 steps and ticks at every one. |
+| <img src="art/px_toggles.gif" width="300" /> | **The toggles.** Off one frame, on the next. No spring, no fade. It feels like flipping a real switch, which is the whole point. |
+| <img src="art/px_arcade.gif" width="300" /> | **The player.** Tap the heart and it fills in pink. The play button presses like everything else here: down, up, done. |
+| <img src="art/px_motion.gif" width="300" /> | **The micro interactions.** A little zoo of the moves the style is allowed to make. The spinner rotates through five drawn frames. That's the entire animation budget. |
+
+<p align="center">
+  <img src="art/px_home.png" width="160" />
+  <img src="art/px_device.png" width="160" />
+  <img src="art/px_type.png" width="160" />
+  <img src="art/px_color.png" width="160" />
+</p>
+
 ## How it's drawn
 
 Two tools:
 
 **Shaders** for anything that should feel like a material: brushed metal, screws, glow tubes, clay, the planet, the raymarched cloud, the blister pack, silicone, milky glass. They're resolution independent, so the same shader draws a tiny landing-card preview or a full screen and doesn't care. Interactive ones take extra uniforms (`uPulse`, `uKnob`, `uTouch`) that Compose feeds from spring animations.
 
-**Canvas** for anything that should feel like UI: the dot matrix font (a 5×7 grid I typed in by hand, letter by letter, like it's 1982), progress dots, equalizers, icons, the spinny bits.
+**Canvas** for anything that should feel like UI: the dot matrix font (a 5×7 grid I typed in by hand, letter by letter, like it's 1982), progress dots, equalizers, icons, the spinny bits. Pixel Craft is Canvas all the way down. It has its own 5×7 font plus a heavier display face, and about forty sprites that live in the source as strings of characters, one character per pixel.
 
 One layout trick: every screen is designed in made-up units, and I rescale `LocalDensity` so those units fill whatever screen you have. No responsive logic anywhere.
 

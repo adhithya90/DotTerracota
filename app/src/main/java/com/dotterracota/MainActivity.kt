@@ -16,11 +16,13 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 import com.dotterracota.ui.DotTerracotaStyle
 import com.softmachine.ui.SoftMachineStyle
+import com.pixelcraft.ui.PixelCraftStyle
 
 object Lens {
     const val LANDING = 0
     const val TERRACOTA = 1
     const val SOFT_MACHINE = 2
+    const val PIXEL_CRAFT = 3
 }
 
 class MainActivity : ComponentActivity() {
@@ -40,6 +42,10 @@ class MainActivity : ComponentActivity() {
                     Lens.SOFT_MACHINE -> {
                         BackHandler { current = Lens.LANDING }
                         SoftMachineStyle()
+                    }
+                    Lens.PIXEL_CRAFT -> {
+                        BackHandler { current = Lens.LANDING }
+                        PixelCraftStyle()
                     }
                 }
             }

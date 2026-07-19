@@ -107,14 +107,22 @@ fun SoftMachineStyle() {
     }
 }
 
-/** Live miniature for the landing card: the phone home screen. */
+/** Live miniature for the landing card: the air core cushion plate. */
 @Composable
 fun SoftMachinePreview(modifier: Modifier = Modifier) {
-    BoxWithConstraints(modifier) {
-        val scale = maxWidth / 130.dp
-        val base = LocalDensity.current
-        CompositionLocalProvider(LocalDensity provides Density(base.density * scale, 1f)) {
-            SoftHome(Modifier.fillMaxSize())
+    Box(
+        modifier.background(SoftColors.bg).padding(18.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Box(
+            Modifier
+                .aspectRatio(100f / 141f)
+                .softShadow(corner = 12.dp)
+                .clip(RoundedCornerShape(12.dp))
+        ) {
+            ShaderPanel(SoftShaders.CUSHION_PLATE, Modifier.fillMaxSize()) {
+                setFloatUniform("uKnob", 0.3f)
+            }
         }
     }
 }

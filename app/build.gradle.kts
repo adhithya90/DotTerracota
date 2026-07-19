@@ -37,6 +37,7 @@ dependencies {
     implementation(project(":core"))
     implementation(project(":dotterracota"))
     implementation(project(":softmachine"))
+    implementation(project(":pixelcraft"))
     implementation("androidx.activity:activity-compose:1.12.4")
     implementation("androidx.compose.material3:material3")
 }

@@ -1,6 +1,6 @@
 # Dot Terracota
 
-I saw a pretty terracotta moodboard and got completely carried away. This is an Android app where everything — the metal, the glowing tubes, the little planet, the clay knob — is drawn with code. There is not a single PNG in this repo. I checked.
+I saw a pretty terracotta moodboard and got completely carried away. This is an Android app where everything is drawn with code: the metal, the glowing tubes, the little planet, the clay knob. There is not a single PNG in this repo. I checked.
 
 Compose draws the UI bits. AGSL shaders draw the stuff that pretends to be physical. That's the whole trick.
 
@@ -42,9 +42,9 @@ Twelve of them, one swipe apart. This started as one giant poster crammed onto a
 
 Two tools, split by vibe:
 
-**Shaders** for anything that should feel like a material — brushed metal, screws, glow tubes, clay, the planet, the Mars landscape in the player. They're resolution independent, so the same shader draws a tiny card or a full screen and doesn't care. The interactive ones take a couple of extra uniforms (`uPulse`, `uLight`) that Compose feeds from spring animations. That's the entire subwoofer.
+**Shaders** for anything that should feel like a material: brushed metal, screws, glow tubes, clay, the planet, the Mars landscape in the player. They're resolution independent, so the same shader draws a tiny card or a full screen and doesn't care. The interactive ones take a couple of extra uniforms (`uPulse`, `uLight`) that Compose feeds from spring animations. That's the entire subwoofer.
 
-**Canvas** for anything that should feel like UI — the dot matrix font (a 5×7 grid I typed in by hand, letter by letter, like it's 1982), the progress dots, the equalizer, the icons, the spinny bits.
+**Canvas** for anything that should feel like UI: the dot matrix font (a 5×7 grid I typed in by hand, letter by letter, like it's 1982), the progress dots, the equalizer, the icons, the spinny bits.
 
 One layout trick: every screen is designed in made-up units, and I rescale `LocalDensity` so those units fill whatever screen you have. No responsive logic anywhere. It's a poster trick. It works great.
 

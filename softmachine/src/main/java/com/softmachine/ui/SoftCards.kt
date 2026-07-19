@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -157,56 +158,56 @@ fun DrilledDots(modifier: Modifier, count: Int = 12, active: Int = 0) {
 fun SoftFeaturesCard(modifier: Modifier) {
     SoftPanel(modifier) {
         Column(
-            Modifier.fillMaxSize().padding(horizontal = 16.dp, vertical = 12.dp),
+            Modifier.fillMaxSize().padding(18.dp),
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
-            SoftFeatureRow("GENTLE HAPTICS") { c ->
-                val s = size.minDimension
-                for (i in 0 until 4) {
-                    val a = i * PI / 2 + PI / 4
-                    drawCircle(c, s * 0.16f,
-                        Offset(center.x + (s * 0.20f * cos(a)).toFloat(), center.y + (s * 0.20f * sin(a)).toFloat()),
-                        style = Stroke(1.dp.toPx()))
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
+                FeatureIcon { c ->
+                    val s2 = size.minDimension
+                    for (i in 0 until 4) {
+                        val a = i * PI / 2 + PI / 4
+                        drawCircle(c, s2 * 0.16f,
+                            Offset(center.x + (s2 * 0.20f * cos(a)).toFloat(), center.y + (s2 * 0.20f * sin(a)).toFloat()),
+                            style = Stroke(1.dp.toPx()))
+                    }
+                }
+                FeatureIcon { c ->
+                    for (row in 0..1) {
+                        val p = Path()
+                        val y0 = size.height * (0.35f + row * 0.3f)
+                        p.moveTo(0f, y0)
+                        var x = 0f
+                        while (x < size.width) {
+                            p.quadraticTo(x + size.width * 0.125f, y0 + (if ((x / (size.width / 2)).toInt() % 2 == 0) -1 else 1) * size.height * 0.16f,
+                                x + size.width * 0.25f, y0)
+                            x += size.width * 0.25f
+                        }
+                        drawPath(p, c, style = Stroke(1.dp.toPx(), cap = StrokeCap.Round))
+                    }
                 }
             }
-            SoftFeatureRow("FLUID TRANSITIONS") { c ->
-                for (row in 0..1) {
-                    val p = Path()
-                    val y0 = size.height * (0.35f + row * 0.3f)
-                    p.moveTo(0f, y0)
-                    var x = 0f
-                    while (x < size.width) {
-                        p.quadraticTo(x + size.width * 0.125f, y0 + (if ((x / (size.width / 2)).toInt() % 2 == 0) -1 else 1) * size.height * 0.16f,
-                            x + size.width * 0.25f, y0)
-                        x += size.width * 0.25f
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
+                FeatureIcon { c ->
+                    drawCircle(c, size.minDimension * 0.36f, center, style = Stroke(1.dp.toPx()))
+                }
+                FeatureIcon { c ->
+                    val s2 = size.minDimension
+                    val p = Path().apply {
+                        moveTo(s2 * 0.5f, s2 * 0.80f)
+                        cubicTo(s2 * 0.05f, s2 * 0.48f, s2 * 0.22f, s2 * 0.12f, s2 * 0.5f, s2 * 0.34f)
+                        cubicTo(s2 * 0.78f, s2 * 0.12f, s2 * 0.95f, s2 * 0.48f, s2 * 0.5f, s2 * 0.80f)
+                        close()
                     }
                     drawPath(p, c, style = Stroke(1.dp.toPx(), cap = StrokeCap.Round))
                 }
-            }
-            SoftFeatureRow("NATURAL RHYTHM") { c ->
-                drawCircle(c, size.minDimension * 0.36f, center, style = Stroke(1.dp.toPx()))
-            }
-            SoftFeatureRow("HUMAN CENTERED") { c ->
-                val s = size.minDimension
-                val p = Path().apply {
-                    moveTo(s * 0.5f, s * 0.80f)
-                    cubicTo(s * 0.05f, s * 0.48f, s * 0.22f, s * 0.12f, s * 0.5f, s * 0.34f)
-                    cubicTo(s * 0.78f, s * 0.12f, s * 0.95f, s * 0.48f, s * 0.5f, s * 0.80f)
-                    close()
-                }
-                drawPath(p, c, style = Stroke(1.dp.toPx(), cap = StrokeCap.Round))
             }
         }
     }
 }
 
 @Composable
-private fun SoftFeatureRow(text: String, icon: DrawScope.(Color) -> Unit) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Canvas(Modifier.size(13.dp)) { icon(SoftColors.ink.copy(alpha = 0.65f)) }
-        Spacer(Modifier.width(12.dp))
-        SoftLabel(text, 7.sp, SoftColors.ink.copy(alpha = 0.75f))
-    }
+private fun FeatureIcon(icon: DrawScope.(Color) -> Unit) {
+    Canvas(Modifier.size(20.dp)) { icon(SoftColors.ink.copy(alpha = 0.55f)) }
 }
 
 // ----------------------------------------------------------------- system
@@ -214,28 +215,14 @@ private fun SoftFeatureRow(text: String, icon: DrawScope.(Color) -> Unit) {
 @Composable
 fun SystemStatusCard(modifier: Modifier) {
     SoftPanel(modifier) {
-        Column(Modifier.fillMaxSize().padding(16.dp)) {
-            SoftLabel("SYSTEM STATUS", 6.5.sp)
-            Spacer(Modifier.height(12.dp))
-            StatusRow("BATTERY", "82%", 0.82f)
-            Spacer(Modifier.height(12.dp))
-            StatusRow("STORAGE", "128 GB", 0.56f)
-            Spacer(Modifier.height(12.dp))
-            StatusRow("MEMORY", "6.2 GB", 0.38f)
+        Column(
+            Modifier.fillMaxSize().padding(horizontal = 16.dp, vertical = 16.dp),
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            SoftBar(0.82f, Modifier.fillMaxWidth().height(4.dp))
+            SoftBar(0.56f, Modifier.fillMaxWidth().height(4.dp))
+            SoftBar(0.38f, Modifier.fillMaxWidth().height(4.dp))
         }
-    }
-}
-
-@Composable
-private fun StatusRow(label: String, value: String, fill: Float) {
-    Column {
-        Row(Modifier.fillMaxWidth()) {
-            SoftLabel(label, 6.sp)
-            Spacer(Modifier.weight(1f))
-            SoftText(value, 8.5.sp, SoftColors.ink, weight = FontWeight.Normal)
-        }
-        Spacer(Modifier.height(5.dp))
-        SoftBar(fill, Modifier.fillMaxWidth().height(6.dp))
     }
 }
 
@@ -245,10 +232,6 @@ fun SoftBar(fill: Float, modifier: Modifier) {
     Canvas(modifier) {
         val r = size.height / 2f
         drawRoundRect(Color(0xFFDCD4CE), cornerRadius = CornerRadius(r, r))
-        drawRoundRect(
-            Color(0x338A8274), size = Size(size.width, size.height * 0.4f),
-            cornerRadius = CornerRadius(r, r)
-        )
         if (fill > 0.02f) {
             drawRoundRect(
                 Brush.horizontalGradient(listOf(SoftColors.lavenderPale, SoftColors.lavender)),
@@ -293,20 +276,19 @@ private fun SoftRoundButton(icon: DrawScope.(Color) -> Unit) {
     Box(
         Modifier
             .pressSquash(depth = 0.86f)
-            .softShadow(corner = 50.dp, offset = 3.dp, blur = 8.dp)
-            .size(27.dp)
+            .softShadow(corner = 50.dp, offset = 2.5.dp, blur = 7.dp)
+            .size(24.dp)
             .clip(CircleShape)
             .background(Color(0xFFF0EBE6)),
         contentAlignment = Alignment.Center
     ) {
-        Canvas(Modifier.size(13.dp)) { icon(SoftColors.ink.copy(alpha = 0.7f)) }
+        Canvas(Modifier.size(11.dp)) { icon(SoftColors.ink.copy(alpha = 0.7f)) }
     }
 }
 
 @Composable
 fun SoftBrightness(modifier: Modifier) {
     var level by remember { mutableFloatStateOf(0.55f) }
-    var auto by remember { mutableStateOf(true) }
     val view = LocalView.current
     SoftPanel(modifier, corner = 50.dp, color = Color(0xFFEDE7E2)) {
         Row(
@@ -329,14 +311,12 @@ fun SoftBrightness(modifier: Modifier) {
                 Modifier.weight(1f).height(20.dp)
                     .pointerInput(Unit) {
                         detectHorizontalDragGestures { change, _ ->
-                            auto = false
                             level = (change.position.x / size.width).coerceIn(0f, 1f)
                             change.consume()
                         }
                     }
                     .pointerInput(Unit) {
                         detectTapGestures {
-                            auto = false
                             level = (it.x / size.width).coerceIn(0f, 1f)
                             view.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
                         }
@@ -352,18 +332,6 @@ fun SoftBrightness(modifier: Modifier) {
                     )
                 }
             }
-            Spacer(Modifier.width(10.dp))
-            SoftLabel(
-                "AUTO", 5.5.sp,
-                if (auto) SoftColors.lavenderDeep else SoftColors.faint,
-                modifier = Modifier.pointerInput(Unit) {
-                    detectTapGestures {
-                        auto = !auto
-                        if (auto) level = 0.55f
-                        view.performHapticFeedback(HapticFeedbackConstants.CONTEXT_CLICK)
-                    }
-                }
-            )
         }
     }
 }
@@ -374,9 +342,7 @@ fun SoftBrightness(modifier: Modifier) {
 fun SoftEqualizerCard(modifier: Modifier) {
     val levels = remember { mutableListOf(0.7f, 0.5f, 0.8f, 0.45f, 0.6f, 0.35f).map { mutableFloatStateOf(it) } }
     SoftPanel(modifier) {
-        Column(Modifier.fillMaxSize().padding(horizontal = 11.dp, vertical = 14.dp)) {
-            SoftLabel("EQUALIZER", 6.5.sp, modifier = Modifier.padding(start = 4.dp))
-            Spacer(Modifier.height(12.dp))
+        Column(Modifier.fillMaxSize().padding(horizontal = 11.dp, vertical = 16.dp)) {
             Row(Modifier.weight(1f).fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
                 levels.forEach { state ->
                     Canvas(
@@ -410,29 +376,7 @@ fun SoftEqualizerCard(modifier: Modifier) {
                     }
                 }
             }
-            Spacer(Modifier.height(12.dp))
-            Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                SoftChip("SOFT", true)
-                SoftChip("BALANCE", false)
-                SoftChip("FOCUS", false)
-            }
         }
-    }
-}
-
-@Composable
-private fun SoftChip(text: String, filled: Boolean) {
-    Box(
-        if (filled) Modifier.clip(RoundedCornerShape(8.dp)).background(SoftColors.lavender)
-        else Modifier.clip(RoundedCornerShape(8.dp)).background(Color(0xFFE2DBD4)),
-        contentAlignment = Alignment.Center
-    ) {
-        SoftText(
-            text, 4.8.sp,
-            if (filled) Color(0xFF4E4658) else SoftColors.dim,
-            weight = FontWeight.Medium, spacingEm = 0.03f,
-            modifier = Modifier.padding(horizontal = 6.dp, vertical = 3.5.dp)
-        )
     }
 }
 
@@ -484,9 +428,7 @@ fun PebbleButton(modifier: Modifier) {
 @Composable
 fun SoftPaletteCard(modifier: Modifier) {
     SoftPanel(modifier) {
-        Column(Modifier.fillMaxSize().padding(14.dp)) {
-            SoftLabel("COLOR PALETTE", 6.5.sp)
-            Spacer(Modifier.height(10.dp))
+        Column(Modifier.fillMaxSize().padding(horizontal = 16.dp, vertical = 15.dp)) {
             val entries = listOf(
                 Color(0xFFD2BDDB) to "#DCCCF1",
                 Color(0xFFF6D2BE) to "#FFDCC6",
@@ -494,19 +436,16 @@ fun SoftPaletteCard(modifier: Modifier) {
                 Color(0xFFF3EFEA) to "#F6F5F2",
                 Color(0xFF3B3835) to "#3A3A3A",
             )
-            entries.forEach { (c, hex) ->
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Box(
-                        Modifier
-                            .softShadow(corner = 9.dp, offset = 2.dp, blur = 5.dp)
-                            .size(38.dp, 13.dp)
-                            .clip(RoundedCornerShape(7.dp))
-                            .background(c)
-                    )
-                    Spacer(Modifier.width(8.dp))
-                    SoftText(hex, 5.sp, SoftColors.dim, spacingEm = 0f)
-                }
-                Spacer(Modifier.height(9.dp))
+            entries.forEachIndexed { i, (c, _) ->
+                Box(
+                    Modifier
+                        .softShadow(corner = 8.dp, offset = 2.dp, blur = 5.dp)
+                        .fillMaxWidth()
+                        .height(15.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(c)
+                )
+                if (i < entries.lastIndex) Spacer(Modifier.height(10.dp))
             }
         }
     }
@@ -515,10 +454,8 @@ fun SoftPaletteCard(modifier: Modifier) {
 @Composable
 fun SoftTypographyCard(modifier: Modifier) {
     SoftPanel(modifier) {
-        Column(Modifier.fillMaxSize().padding(16.dp)) {
-            SoftLabel("TYPOGRAPHY", 6.5.sp)
-            Spacer(Modifier.height(6.dp))
-            SoftText("Aa", 26.sp, SoftColors.lavenderDeep, weight = FontWeight.Light)
+        Column(Modifier.fillMaxSize().padding(18.dp)) {
+            SoftText("Aa", 28.sp, SoftColors.lavenderDeep, weight = FontWeight.Light)
             Spacer(Modifier.height(6.dp))
             SoftText(
                 "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
@@ -531,8 +468,6 @@ fun SoftTypographyCard(modifier: Modifier) {
             )
             Spacer(Modifier.height(3.dp))
             SoftText("0123456789", 7.sp, SoftColors.ink.copy(alpha = 0.65f), spacingEm = 0.06f)
-            Spacer(Modifier.weight(1f))
-            SoftLabel("TYPE: SOFT NEUE REGULAR", 6.sp, SoftColors.faint)
         }
     }
 }
@@ -545,10 +480,6 @@ fun SoftPlayerCard(modifier: Modifier) {
         Column(Modifier.fillMaxSize()) {
             Box(Modifier.fillMaxWidth().weight(1f)) {
                 ShaderPanel(SoftShaders.CLOUDSCAPE, Modifier.fillMaxSize(), animated = true)
-                Column(Modifier.align(Alignment.BottomStart).padding(12.dp)) {
-                    SoftText("AMBIENT CLOUD", 8.5.sp, Color.White, weight = FontWeight.Medium, spacingEm = 0.12f)
-                    SoftLabel("FLOATING POINTS", 5.5.sp, Color(0xCCFFFFFF))
-                }
             }
             Column(Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 9.dp)) {
                 Canvas(Modifier.fillMaxWidth().height(5.dp)) {
@@ -558,19 +489,14 @@ fun SoftPlayerCard(modifier: Modifier) {
                     drawCircle(Color.White, 2.6.dp.toPx(), Offset(size.width * 0.27f, y))
                     drawCircle(SoftColors.lavenderDeep, 1.5.dp.toPx(), Offset(size.width * 0.27f, y))
                 }
-                Row(Modifier.fillMaxWidth()) {
-                    SoftText("0:58", 5.5.sp, SoftColors.dim)
-                    Spacer(Modifier.weight(1f))
-                    SoftText("3:45", 5.5.sp, SoftColors.dim)
-                }
-                Spacer(Modifier.height(6.dp))
+                Spacer(Modifier.height(8.dp))
                 Row(
                     Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Canvas(Modifier.size(9.dp)) { drawSkipSoft(SoftColors.ink.copy(alpha = 0.75f), false) }
-                    Spacer(Modifier.width(7.dp))
+                    Spacer(Modifier.width(16.dp))
                     Box(
                         Modifier
                             .pressSquash(depth = 0.85f)
@@ -587,7 +513,7 @@ fun SoftPlayerCard(modifier: Modifier) {
                             drawRoundRect(c, Offset(size.width * 0.62f, 0f), Size(w, size.height), CornerRadius(w / 2))
                         }
                     }
-                    Spacer(Modifier.width(7.dp))
+                    Spacer(Modifier.width(16.dp))
                     Canvas(Modifier.size(9.dp)) { drawSkipSoft(SoftColors.ink.copy(alpha = 0.75f), true) }
                 }
                 Spacer(Modifier.height(3.dp))
@@ -598,7 +524,7 @@ fun SoftPlayerCard(modifier: Modifier) {
 
 @Composable
 fun SoftTiles(modifier: Modifier, time: Float) {
-    Column(modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    Row(modifier, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
         SoftTile {
             Canvas(Modifier.size(16.dp)) {
                 val c = SoftColors.ink.copy(alpha = 0.6f)
@@ -612,7 +538,6 @@ fun SoftTiles(modifier: Modifier, time: Float) {
                 }
             }
         }
-        SoftTile { SoftText("23°", 10.sp, SoftColors.ink.copy(alpha = 0.75f), weight = FontWeight.Light) }
         SoftTile {
             Canvas(Modifier.size(16.dp)) {
                 val c = SoftColors.ink.copy(alpha = 0.6f)
@@ -643,8 +568,8 @@ fun SoftTiles(modifier: Modifier, time: Float) {
 }
 
 @Composable
-private fun SoftTile(content: @Composable () -> Unit) {
-    SoftPanel(Modifier.fillMaxWidth().height(32.dp), corner = 12.dp) {
+private fun RowScope.SoftTile(content: @Composable () -> Unit) {
+    SoftPanel(Modifier.weight(1f).height(32.dp), corner = 12.dp) {
         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { content() }
     }
 }
@@ -654,15 +579,13 @@ private fun SoftTile(content: @Composable () -> Unit) {
 @Composable
 fun SoftMicroCard(modifier: Modifier, time: Float) {
     SoftPanel(modifier) {
-        Column(Modifier.fillMaxSize().padding(14.dp)) {
-            SoftLabel("MICRO INTERACTIONS", 6.5.sp)
-            Spacer(Modifier.height(6.dp))
+        Column(Modifier.fillMaxSize().padding(horizontal = 14.dp, vertical = 13.dp)) {
             Row(Modifier.weight(1f).fillMaxWidth()) {
                 MicroCell("PULSE", Modifier.weight(1f)) { PulseBall(time) }
                 MicroCell("BOUNCE", Modifier.weight(1f)) { BounceBall() }
                 MicroCell("SETTLE", Modifier.weight(1f)) { SettleCheck() }
             }
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(10.dp))
             Row(
                 Modifier.fillMaxWidth()
                     .softShadow(corner = 50.dp, offset = 2.dp, blur = 6.dp)
@@ -671,8 +594,6 @@ fun SoftMicroCard(modifier: Modifier, time: Float) {
                     .padding(horizontal = 12.dp, vertical = 8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                SoftLabel("LOADING", 6.sp)
-                Spacer(Modifier.width(12.dp))
                 Canvas(Modifier.weight(1f).height(5.dp)) {
                     val r = size.height / 2f
                     drawRoundRect(Color(0xFFDCD4CE), cornerRadius = CornerRadius(r, r))
@@ -694,14 +615,13 @@ fun SoftMicroCard(modifier: Modifier, time: Float) {
 @Composable
 private fun MicroCell(label: String, modifier: Modifier, content: @Composable () -> Unit) {
     Column(modifier.fillMaxHeight(), horizontalAlignment = Alignment.CenterHorizontally) {
-        SoftLabel(label, 5.5.sp, SoftColors.dim)
         Box(Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) { content() }
     }
 }
 
 @Composable
 private fun PulseBall(time: Float) {
-    Canvas(Modifier.size(44.dp)) {
+    Canvas(Modifier.size(30.dp)) {
         val phase = (time % 1.8f) / 1.8f
         drawCircle(
             SoftColors.lavender.copy(alpha = (1f - phase) * 0.4f),
@@ -724,7 +644,7 @@ private fun BounceBall() {
     val scope = rememberCoroutineScope()
     val view = LocalView.current
     Canvas(
-        Modifier.size(44.dp).pointerInput(Unit) {
+        Modifier.size(30.dp).pointerInput(Unit) {
             detectTapGestures {
                 view.performHapticFeedback(HapticFeedbackConstants.CONTEXT_CLICK)
                 scope.launch {
@@ -749,8 +669,8 @@ private fun BounceBall() {
 
 @Composable
 private fun SettleCheck() {
-    Canvas(Modifier.size(44.dp)) {
-        drawCircle(Color(0xFFE8E2DC), size.minDimension * 0.34f, center)
+    Canvas(Modifier.size(30.dp)) {
+        drawCircle(Color(0xFFE8E2DC), size.minDimension * 0.40f, center)
         drawCircle(Color(0x2E887A72), size.minDimension * 0.34f, center, style = Stroke(1.dp.toPx()))
         val c = SoftColors.lavenderDeep
         val p = Path().apply {

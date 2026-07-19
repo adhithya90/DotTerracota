@@ -34,7 +34,7 @@ fun Modifier.softShadow(
     corner: Dp = 18.dp,
     offset: Dp = 4.dp,
     blur: Dp = 10.dp,
-    dark: Color = Color(0x38887A72),
+    dark: Color = Color(0x2E887A72),
     light: Color = Color(0xD9FBF7F3),
 ): Modifier = drawBehind {
     val r = corner.toPx()
@@ -48,7 +48,7 @@ fun Modifier.softShadow(
         canvas.nativeCanvas.drawRoundRect(-o, -o, size.width - o, size.height - o, r, r, fw)
         // wide faint ambient shadow
         fw.maskFilter = BlurMaskFilter(blur.toPx() * 2.2f, BlurMaskFilter.Blur.NORMAL)
-        fw.color = dark.copy(alpha = dark.alpha * 0.45f).toArgb()
+        fw.color = dark.copy(alpha = dark.alpha * 0.35f).toArgb()
         canvas.nativeCanvas.drawRoundRect(
             o * 1.8f, o * 2.2f, size.width + o * 1.8f, size.height + o * 2.2f, r, r, fw
         )

@@ -63,12 +63,12 @@ object Pages {
     const val BRAND = 3
     const val SYSTEM = 4
     const val SOUND = 5
-    const val COLOR = 6
-    const val MATERIAL = 7
-    const val TYPOGRAPHY = 8
-    const val SPEAKER = 9
-    const val PLAYER = 10
-    const val MOTION = 11
+    const val MATERIAL = 6
+    const val TYPOGRAPHY = 7
+    const val SPEAKER = 8
+    const val PLAYER = 9
+    const val MOTION = 10
+    const val COLOR = 11
     const val COUNT = 12
 }
 
@@ -128,7 +128,6 @@ private fun PageIndicator(state: PagerState, modifier: Modifier) {
 @Composable
 private fun ScreenScaffold(
     designWidth: Float,
-    eyebrow: String,
     title: String,
     content: @Composable ColumnScope.() -> Unit,
 ) {
@@ -144,8 +143,6 @@ private fun ScreenScaffold(
             ) {
                 Spacer(Modifier.height(WindowInsets.statusBars.asPaddingValues().calculateTopPadding()))
                 Spacer(Modifier.height(8.dp))
-                MonoText(eyebrow, 5.5.sp, Color(0xFF8A7F70))
-                Spacer(Modifier.height(5.dp))
                 DotMatrixText(title, pitch = 2.2.dp, color = Color(0xFF23201C))
                 Spacer(Modifier.height(13.dp))
                 content()
@@ -231,7 +228,7 @@ private fun HomePage() {
 
 @Composable
 private fun HardwarePage() {
-    ScreenScaffold(166f, "02 / 12 — HARDWARE", "DOT MATRIX\nINTERFACE") {
+    ScreenScaffold(166f, "DOT MATRIX\nINTERFACE") {
         val scope = rememberCoroutineScope()
         val thump = remember { Animatable(0f) }
         var lightsOn by remember { mutableStateOf(true) }
@@ -268,7 +265,7 @@ private fun HardwarePage() {
 
 @Composable
 private fun BrandPage() {
-    ScreenScaffold(166f, "03 / 12 — BRAND", "WARM\nBY DESIGN") {
+    ScreenScaffold(166f, "WARM\nBY DESIGN") {
         FutureIsWarmCard(Modifier.fillMaxWidth().height(100.dp))
         Spacer(Modifier.height(12.dp))
         FeaturesCard(Modifier.fillMaxWidth().height(92.dp))
@@ -277,7 +274,7 @@ private fun BrandPage() {
 
 @Composable
 private fun SystemPage() {
-    ScreenScaffold(150f, "04 / 12 — SYSTEM", "STATUS") {
+    ScreenScaffold(150f, "STATUS") {
         BatteryCard(Modifier.fillMaxWidth().height(122.dp))
         Spacer(Modifier.height(14.dp))
         TogglesRow(Modifier.fillMaxWidth())
@@ -288,7 +285,7 @@ private fun SystemPage() {
 
 @Composable
 private fun SoundPage() {
-    ScreenScaffold(150f, "05 / 12 — SOUND", "EQUALIZER") {
+    ScreenScaffold(150f, "EQUALIZER") {
         var volume by remember { mutableIntStateOf(50) }
         EqualizerCard(Modifier.fillMaxWidth().height(138.dp))
         Spacer(Modifier.height(18.dp))
@@ -302,37 +299,34 @@ private fun SoundPage() {
                 litColor = Color(0xFF2B2721), dimColor = Color(0x332B2721)
             )
         }
-        Spacer(Modifier.height(5.dp))
-        Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-            MonoText("VOLUME $volume", 5.sp, Color(0xFF8A7F70))
-        }
+
     }
 }
 
 @Composable
 private fun ColorPage() {
-    ScreenScaffold(132f, "06 / 12 — COLOR", "PALETTE") {
+    ScreenScaffold(132f, "PALETTE") {
         PaletteCard(Modifier.fillMaxWidth())
     }
 }
 
 @Composable
 private fun MaterialPage() {
-    ScreenScaffold(164f, "07 / 12 — MATERIAL", "TEXTURE") {
+    ScreenScaffold(164f, "TEXTURE") {
         MaterialTextureCard(Modifier)
     }
 }
 
 @Composable
 private fun TypographyPage() {
-    ScreenScaffold(193f, "08 / 12 — TYPOGRAPHY", "DOT TYPE") {
+    ScreenScaffold(193f, "DOT TYPE") {
         TypographyCard(Modifier.fillMaxWidth().height(152.dp))
     }
 }
 
 @Composable
 private fun SpeakerPage() {
-    ScreenScaffold(150f, "09 / 12 — SPEAKER", "BACKLIGHT") {
+    ScreenScaffold(150f, "BACKLIGHT") {
         val scope = rememberCoroutineScope()
         val thump = remember { Animatable(0f) }
         var lightsOn by remember { mutableStateOf(true) }
@@ -369,7 +363,7 @@ private fun SpeakerPage() {
 
 @Composable
 private fun PlayerPage() {
-    ScreenScaffold(160f, "10 / 12 — PLAYER", "AMBIENT\nCLAY") {
+    ScreenScaffold(160f, "AMBIENT\nCLAY") {
         val time by rememberTimeSeconds()
         Row(Modifier.fillMaxWidth()) {
             PlayerCard(Modifier.weight(1f).height(162.dp))
@@ -381,7 +375,7 @@ private fun PlayerPage() {
 
 @Composable
 private fun MotionPage() {
-    ScreenScaffold(160f, "11 / 12 — MICRO INTERACTIONS", "MOTION") {
+    ScreenScaffold(160f, "MOTION") {
         val time by rememberTimeSeconds()
         MicroInteractionsCard(Modifier.fillMaxWidth().height(172.dp), time)
     }

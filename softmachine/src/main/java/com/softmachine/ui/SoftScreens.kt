@@ -74,11 +74,11 @@ object SoftPages {
     const val BRAND = 4
     const val SYSTEM = 5
     const val SOUND = 6
-    const val COLOR = 7
-    const val MATERIAL = 8
-    const val TYPOGRAPHY = 9
-    const val PLAYER = 10
-    const val MOTION = 11
+    const val MATERIAL = 7
+    const val TYPOGRAPHY = 8
+    const val PLAYER = 9
+    const val MOTION = 10
+    const val COLOR = 11
     const val COUNT = 12
 }
 
@@ -146,29 +146,21 @@ private fun SoftPageIndicator(state: PagerState, modifier: Modifier) {
 
 @Composable
 private fun SoftScaffold(
-    designWidth: Float,
-    eyebrow: String,
-    title: String,
+    label: String,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     BoxWithConstraints(Modifier.fillMaxSize().background(SoftColors.bg)) {
-        val scale = maxWidth / designWidth.dp
+        val scale = maxWidth / 160.dp
         val base = LocalDensity.current
         CompositionLocalProvider(LocalDensity provides Density(base.density * scale, 1f)) {
-            Column(
-                Modifier
-                    .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
-                    .padding(horizontal = 14.dp)
-            ) {
+            Column(Modifier.fillMaxSize().padding(horizontal = 18.dp)) {
                 Spacer(Modifier.height(WindowInsets.statusBars.asPaddingValues().calculateTopPadding()))
-                Spacer(Modifier.height(10.dp))
-                SoftLabel(eyebrow, 6.5.sp, SoftColors.faint)
-                Spacer(Modifier.height(4.dp))
-                SoftText(title, 17.sp, SoftColors.ink, weight = FontWeight.Light, spacingEm = 0.06f, lineHeight = 21.sp)
-                Spacer(Modifier.height(14.dp))
+                Spacer(Modifier.height(16.dp))
+                SoftLabel(label, 7.sp, SoftColors.faint)
+                Spacer(Modifier.weight(0.8f))
                 content()
-                Spacer(Modifier.height(36.dp))
+                Spacer(Modifier.weight(1f))
+                Spacer(Modifier.height(26.dp))
             }
         }
     }
@@ -193,15 +185,9 @@ private fun SoftHeroPage() {
                     Spacer(Modifier.width(12.dp))
                     SoftFlower(Modifier.padding(top = 6.dp).size(16.dp))
                 }
-                Spacer(Modifier.height(10.dp))
-                SoftLabel("GENTLE SYSTEMS,\nHUMAN FUTURES.", 7.sp, lineHeight = 11.sp)
-                Spacer(Modifier.weight(0.6f))
+                Spacer(Modifier.weight(0.85f))
                 CloudCard(Modifier.fillMaxWidth().aspectRatio(1.05f))
                 Spacer(Modifier.weight(1f))
-                SoftText(
-                    "A design language inspired by\nsoftness and fluid mechanics.\nInterfaces that feel familiar,\nmaterials that invite touch,\nsystems that breathe with you.",
-                    7.5.sp, SoftColors.dim, lineHeight = 12.5.sp
-                )
                 Spacer(Modifier.height(34.dp))
             }
         }
@@ -223,7 +209,7 @@ private fun SoftHomePage() {
 
 @Composable
 private fun CushionPage() {
-    SoftScaffold(150f, "03 / 12 — HARDWARE", "AIR CORE") {
+    SoftScaffold("AIR CORE") {
         var knob by remember { mutableFloatStateOf(0.25f) }
         val view = LocalView.current
         Box(
@@ -251,18 +237,12 @@ private fun CushionPage() {
                 setFloatUniform("uKnob", knob)
             }
         }
-        Spacer(Modifier.height(14.dp))
-        Row(Modifier.fillMaxWidth()) {
-            SoftLabel("AIR CORE\nCUSHION UNIT", 6.5.sp, lineHeight = 10.5.sp)
-            Spacer(Modifier.weight(1f))
-            SoftLabel("PRESSURE\nRELEASE\nCHANNELS", 6.5.sp, SoftColors.faint, lineHeight = 10.5.sp)
-        }
     }
 }
 
 @Composable
 private fun SiliconePage() {
-    SoftScaffold(150f, "04 / 12 — MATERIAL", "SOFT TOUCH") {
+    SoftScaffold("SOFT TOUCH") {
         val press = remember { Animatable(0f) }
         var touch by remember { mutableStateOf(Offset(0.5f, 0.5f)) }
         val scope = rememberCoroutineScope()
@@ -283,90 +263,58 @@ private fun SiliconePage() {
                 setFloatUniform("uTouch", touch.x * drawSize.width, touch.y * drawSize.height)
                 setFloatUniform("uPress", press.value)
             }
-            Box(Modifier.align(Alignment.TopStart).padding(14.dp)) {
-                SoftText(
-                    "SOFT TOUCH\nSILICONE", 9.sp, Color(0xFF4E4658).copy(alpha = 0.85f),
-                    weight = FontWeight.Medium, spacingEm = 0.14f, lineHeight = 14.sp
-                )
-            }
         }
-        Spacer(Modifier.height(12.dp))
-        SoftText("Press and hold. The longer you press, the deeper it sinks.", 7.sp, SoftColors.dim)
     }
 }
 
 @Composable
 private fun SoftBrandPage() {
-    SoftScaffold(150f, "05 / 12 — PRINCIPLES", "GENTLE BY\nDEFAULT") {
-        SoftFeaturesCard(Modifier.fillMaxWidth().height(110.dp))
-        Spacer(Modifier.height(14.dp))
-        Box(
-            Modifier
-                .fillMaxWidth()
-                .softShadow(corner = 20.dp)
-                .clip(RoundedCornerShape(20.dp))
-                .background(SoftColors.lavenderPale)
-                .padding(16.dp)
-        ) {
-            SoftText(
-                "Nothing snaps.\nEverything eases.",
-                11.sp, Color(0xFF4E4658), weight = FontWeight.Light, lineHeight = 16.sp
-            )
-        }
+    SoftScaffold("PRINCIPLES") {
+        SoftFeaturesCard(Modifier.fillMaxWidth().height(112.dp))
     }
 }
 
 @Composable
 private fun SoftSystemPage() {
-    SoftScaffold(150f, "06 / 12 — SYSTEM", "STATUS") {
-        SystemStatusCard(Modifier.fillMaxWidth().height(128.dp))
-        Spacer(Modifier.height(16.dp))
-        SoftButtonsRow(Modifier.fillMaxWidth().padding(horizontal = 4.dp))
-        Spacer(Modifier.height(16.dp))
-        SoftBrightness(Modifier.fillMaxWidth().height(34.dp))
+    SoftScaffold("SYSTEM") {
+        SystemStatusCard(Modifier.fillMaxWidth().height(108.dp))
+        Spacer(Modifier.height(14.dp))
+        SoftButtonsRow(Modifier.fillMaxWidth().padding(horizontal = 10.dp))
+        Spacer(Modifier.height(14.dp))
+        SoftBrightness(Modifier.fillMaxWidth().height(30.dp))
     }
 }
 
 @Composable
 private fun SoftSoundPage() {
-    SoftScaffold(150f, "07 / 12 — SOUND", "EQUALIZER") {
-        SoftEqualizerCard(Modifier.fillMaxWidth().height(130.dp))
-        Spacer(Modifier.height(20.dp))
+    SoftScaffold("SOUND") {
+        SoftEqualizerCard(Modifier.fillMaxWidth().height(124.dp))
+        Spacer(Modifier.height(18.dp))
         Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-            PebbleButton(Modifier.size(56.dp, 42.dp))
-        }
-        Spacer(Modifier.height(8.dp))
-        Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-            SoftLabel("SQUEEZE ME", 6.sp, SoftColors.faint)
+            PebbleButton(Modifier.size(54.dp, 40.dp))
         }
     }
 }
 
 @Composable
 private fun SoftColorPage() {
-    SoftScaffold(132f, "08 / 12 — COLOR", "PALETTE") {
-        SoftPaletteCard(Modifier.fillMaxWidth())
+    SoftScaffold("COLOR") {
+        SoftPaletteCard(Modifier.fillMaxWidth().height(146.dp))
     }
 }
 
 @Composable
 private fun SoftMaterialPage() {
-    SoftScaffold(150f, "09 / 12 — MATERIAL", "TEXTURES") {
+    SoftScaffold("MATERIAL") {
         val tiles = listOf(
             Triple("SOFT\nSILICONE", SoftShaders.SILICONE_PAD, TileMaterial.SILICONE),
             Triple("MILKY\nGLASS", SoftShaders.MILKY_GLASS, TileMaterial.GLASS),
             Triple("MICRO\nTEXTURE", SoftShaders.MICRO_TEXTURE, TileMaterial.MICRO),
         )
-        tiles.forEach { (label, shader, material) ->
-            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                InteractiveTile(material, shader, Modifier.size(68.dp, 34.dp))
-                Spacer(Modifier.width(12.dp))
-                SoftText(label, 6.sp, SoftColors.dim, weight = FontWeight.Medium, spacingEm = 0.12f, lineHeight = 10.sp)
-            }
-            Spacer(Modifier.height(12.dp))
+        tiles.forEachIndexed { i, (_, shader, material) ->
+            InteractiveTile(material, shader, Modifier.fillMaxWidth().height(36.dp))
+            if (i < tiles.lastIndex) Spacer(Modifier.height(12.dp))
         }
-        Spacer(Modifier.height(2.dp))
-        SoftText("Each material answers touch its own way.", 7.sp, SoftColors.dim)
     }
 }
 
@@ -511,29 +459,25 @@ private suspend fun AwaitPointerEventScope.trackSiliconePress(
 
 @Composable
 private fun SoftTypographyPage() {
-    SoftScaffold(160f, "10 / 12 — TYPOGRAPHY", "SOFT NEUE") {
-        SoftTypographyCard(Modifier.fillMaxWidth().height(158.dp))
+    SoftScaffold("TYPOGRAPHY") {
+        SoftTypographyCard(Modifier.fillMaxWidth().height(142.dp))
     }
 }
 
 @Composable
 private fun SoftPlayerPage() {
-    SoftScaffold(160f, "11 / 12 — PLAYER", "AMBIENT\nCLOUD") {
+    SoftScaffold("PLAYER") {
         val time by rememberTimeSeconds()
-        Row(Modifier.fillMaxWidth()) {
-            SoftPlayerCard(Modifier.weight(1f).height(152.dp))
-            Spacer(Modifier.width(12.dp))
-            SoftTiles(Modifier.width(38.dp), time)
-        }
+        SoftPlayerCard(Modifier.fillMaxWidth().height(148.dp))
+        Spacer(Modifier.height(14.dp))
+        SoftTiles(Modifier.fillMaxWidth(), time)
     }
 }
 
 @Composable
 private fun SoftMotionPage() {
-    SoftScaffold(160f, "12 / 12 — MICRO INTERACTIONS", "MOTION") {
+    SoftScaffold("MOTION") {
         val time by rememberTimeSeconds()
-        SoftMicroCard(Modifier.fillMaxWidth().height(150.dp), time)
-        Spacer(Modifier.height(12.dp))
-        SoftText("Tap the bounce ball.", 7.sp, SoftColors.dim)
+        SoftMicroCard(Modifier.fillMaxWidth().height(112.dp), time)
     }
 }

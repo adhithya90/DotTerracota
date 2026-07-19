@@ -161,10 +161,8 @@ fun FeaturesCard(modifier: Modifier) {
 
 @Composable
 private fun FeatureRow(text: String, icon: DrawScope.(Color) -> Unit) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Canvas(Modifier.size(11.dp)) { icon(Color(0xFFE8DFD2)) }
-        Spacer(Modifier.width(9.dp))
-        MonoText(text, 6.sp, Color(0xFFE8DFD2))
+    Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+        Canvas(Modifier.size(13.dp)) { icon(Color(0xFFE8DFD2)) }
     }
 }
 
@@ -179,11 +177,6 @@ fun BatteryCard(modifier: Modifier) {
             .padding(horizontal = 12.dp, vertical = 10.dp)
     ) {
         Row {
-            Column {
-                MonoText("BATTERY", 5.sp, Color(0xFF9A9186))
-                Spacer(Modifier.height(1.dp))
-                MonoText("76%", 10.5.sp, Color(0xFFF0E8DB), weight = FontWeight.SemiBold)
-            }
             Spacer(Modifier.weight(1f))
             Canvas(Modifier.size(20.dp, 22.dp)) {
                 val lit = listOf(
@@ -203,18 +196,10 @@ fun BatteryCard(modifier: Modifier) {
         Spacer(Modifier.height(4.dp))
         DotBar(0.76f, Modifier.fillMaxWidth().height(4.dp), count = 30,
             litColor = Color(0xFFEDE4D6), dimColor = Color(0xFF35322D))
-        Spacer(Modifier.height(7.dp))
-        MonoText("STORAGE", 5.sp, Color(0xFF9A9186))
-        Spacer(Modifier.height(1.dp))
-        MonoText("128 GB", 8.5.sp, Color(0xFFF0E8DB), weight = FontWeight.SemiBold)
-        Spacer(Modifier.height(3.dp))
+        Spacer(Modifier.height(14.dp))
         DotBar(0.42f, Modifier.fillMaxWidth().height(4.dp), count = 30,
             litColor = Color(0xFFCBC2B4), dimColor = Color(0xFF35322D))
-        Spacer(Modifier.height(7.dp))
-        MonoText("RAM", 5.sp, Color(0xFF9A9186))
-        Spacer(Modifier.height(1.dp))
-        MonoText("8 GB", 8.5.sp, Color(0xFFF0E8DB), weight = FontWeight.SemiBold)
-        Spacer(Modifier.height(3.dp))
+        Spacer(Modifier.height(14.dp))
         DotBar(0.30f, Modifier.fillMaxWidth().height(4.dp), count = 30,
             litColor = Color(0xFFCBC2B4), dimColor = Color(0xFF35322D))
     }
@@ -229,7 +214,6 @@ fun EqualizerCard(modifier: Modifier) {
             .border(0.6.dp, Color(0x14000000), RoundedCornerShape(12.dp))
             .padding(10.dp)
     ) {
-        MonoText("SOUND\nEQUALIZER", 6.sp, Color(0xFF2A2620), lineHeight = 9.5.sp)
         Spacer(Modifier.weight(1f))
         Canvas(Modifier.fillMaxWidth().height(52.dp)) {
             val heights = listOf(5, 8, 4, 9, 6, 3, 7, 10, 5, 7, 4, 6)
@@ -249,29 +233,7 @@ fun EqualizerCard(modifier: Modifier) {
                     Offset(x, size.height - (h + 2) * stepY))
             }
         }
-        Spacer(Modifier.height(9.dp))
-        Row(horizontalArrangement = Arrangement.spacedBy(3.dp)) {
-            Chip("BASS", filled = true)
-            Chip("MID", filled = false)
-            Chip("TREBLE", filled = false)
-        }
-    }
-}
-
-@Composable
-private fun Chip(text: String, filled: Boolean) {
-    val shape = RoundedCornerShape(5.dp)
-    Box(
-        if (filled) Modifier.clip(shape).background(Palette.terra)
-        else Modifier.clip(shape).border(0.7.dp, Color(0x552A2620), shape),
-        contentAlignment = Alignment.Center
-    ) {
-        MonoText(
-            text, 4.3.sp,
-            if (filled) cream else Color(0xFF4A443C),
-            spacingEm = 0.06f,
-            modifier = Modifier.padding(horizontal = 4.5.dp, vertical = 3.dp)
-        )
+        Spacer(Modifier.height(6.dp))
     }
 }
 
@@ -437,7 +399,6 @@ private fun ToggleCircle(
 @Composable
 fun BrightnessBar(modifier: Modifier) {
     var level by remember { mutableFloatStateOf(0.62f) }
-    var auto by remember { mutableStateOf(true) }
     val view = LocalView.current
     Row(
         modifier
@@ -457,31 +418,18 @@ fun BrightnessBar(modifier: Modifier) {
                 .height(20.dp)
                 .pointerInput(Unit) {
                     detectHorizontalDragGestures { change, _ ->
-                        auto = false
                         level = (change.position.x / size.width).coerceIn(0f, 1f)
                         change.consume()
                     }
                 }
                 .pointerInput(Unit) {
                     detectTapGestures { o ->
-                        auto = false
                         level = (o.x / size.width).coerceIn(0f, 1f)
                         view.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
                     }
                 },
             count = 20,
             litColor = Color(0xFFEDE4D6), dimColor = Color(0xFF3B3733), fade = true
-        )
-        Spacer(Modifier.width(10.dp))
-        MonoText(
-            "AUTO", 5.8.sp,
-            if (auto) Palette.terra else Color(0xFF6A645C),
-            weight = FontWeight.SemiBold,
-            modifier = Modifier.clickable(interactionSource = null, indication = null) {
-                auto = !auto
-                if (auto) level = 0.62f
-                view.performHapticFeedback(HapticFeedbackConstants.CONTEXT_CLICK)
-            }
         )
     }
 }
@@ -497,8 +445,7 @@ fun PaletteCard(modifier: Modifier) {
             .border(0.6.dp, Color(0x12000000), RoundedCornerShape(10.dp))
             .padding(9.dp)
     ) {
-        MonoText("COLOR PALETTE", 5.6.sp, Color(0xFF2A2620))
-        Spacer(Modifier.height(8.dp))
+
         val entries = listOf(
             Color(0xFFC75A39) to "#C75A39",
             Color(0xFFE09B7A) to "#E09B7A",
@@ -506,45 +453,27 @@ fun PaletteCard(modifier: Modifier) {
             Color(0xFFF7F4F1) to "#F7F4F1",
             Color(0xFF111112) to "#111112",
         )
-        entries.forEach { (c, hex) ->
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Box(
-                    Modifier
-                        .size(48.dp, 15.dp)
-                        .clip(RoundedCornerShape(7.dp))
-                        .background(c)
-                        .border(0.5.dp, Color(0x14000000), RoundedCornerShape(7.dp))
-                )
-                Spacer(Modifier.width(7.dp))
-                MonoText(hex, 4.8.sp, Color(0xFF6A6157))
-            }
-            Spacer(Modifier.height(7.dp))
+        entries.forEachIndexed { i, (c, _) ->
+            Box(
+                Modifier
+                    .fillMaxWidth()
+                    .height(16.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(c)
+                    .border(0.5.dp, Color(0x14000000), RoundedCornerShape(8.dp))
+            )
+            if (i < entries.lastIndex) Spacer(Modifier.height(9.dp))
         }
     }
 }
 
 @Composable
 fun MaterialTextureCard(modifier: Modifier) {
-    Column(modifier) {
-        MonoText("MATERIAL & TEXTURE", 5.6.sp, Color(0xFF2A2620))
-        Spacer(Modifier.height(8.dp))
-        val labels = listOf("CLAY\nTEXTURE", "TRANSPARENT\nTECH", "MICRO\nPERFORATION", "ANODIZED\nMETAL")
-        Row {
-            Column(Modifier.clip(RoundedCornerShape(8.dp))) {
-                Box(Modifier.size(76.dp, 30.dp)) { ShaderPanel(Shaders.CLAY, Modifier.fillMaxSize()) }
-                Box(Modifier.size(76.dp, 30.dp)) { ShaderPanel(Shaders.TECH, Modifier.fillMaxSize()) }
-                Box(Modifier.size(76.dp, 30.dp)) { PerforationTile(Modifier.fillMaxSize()) }
-                Box(Modifier.size(76.dp, 30.dp)) { ShaderPanel(Shaders.ANODIZED, Modifier.fillMaxSize()) }
-            }
-            Spacer(Modifier.width(8.dp))
-            Column {
-                labels.forEach { label ->
-                    Box(Modifier.height(30.dp), contentAlignment = Alignment.CenterStart) {
-                        MonoText(label, 4.8.sp, Color(0xFF4A443C), lineHeight = 7.sp)
-                    }
-                }
-            }
-        }
+    Column(modifier.clip(RoundedCornerShape(10.dp))) {
+        Box(Modifier.fillMaxWidth().height(32.dp)) { ShaderPanel(Shaders.CLAY, Modifier.fillMaxSize()) }
+        Box(Modifier.fillMaxWidth().height(32.dp)) { ShaderPanel(Shaders.TECH, Modifier.fillMaxSize()) }
+        Box(Modifier.fillMaxWidth().height(32.dp)) { PerforationTile(Modifier.fillMaxSize()) }
+        Box(Modifier.fillMaxWidth().height(32.dp)) { ShaderPanel(Shaders.ANODIZED, Modifier.fillMaxSize()) }
     }
 }
 
@@ -592,8 +521,6 @@ fun TypographyCard(modifier: Modifier) {
             }
         }
         Column(Modifier.padding(6.dp)) {
-            MonoText("TYPOGRAPHY", 5.6.sp, Color(0xFFB8AFA2))
-            Spacer(Modifier.height(9.dp))
             Row(verticalAlignment = Alignment.Bottom) {
                 DotMatrixText("A", pitch = 4.6.dp, color = Color(0xFFEDE4D6))
                 Spacer(Modifier.width(12.dp))
@@ -605,8 +532,6 @@ fun TypographyCard(modifier: Modifier) {
             DotMatrixText("OPQRSTUV WXYZ", pitch = 1.55.dp, color = Color(0xFFDDD3C4))
             Spacer(Modifier.height(3.dp))
             DotMatrixText("0123456789", pitch = 1.55.dp, color = Color(0xFFDDD3C4))
-            Spacer(Modifier.weight(1f))
-            MonoText("DOT MATRIX REGULAR", 5.2.sp, Color(0xFF8F867A))
         }
     }
 }
@@ -623,19 +548,11 @@ fun PlayerCard(modifier: Modifier) {
                 .background(Color(0xFF87381F))
                 .padding(horizontal = 10.dp, vertical = 8.dp)
         ) {
-            MonoText("AMBIENT CLAY", 6.8.sp, Color(0xFFF3EAD9), weight = FontWeight.SemiBold)
-            Spacer(Modifier.height(1.dp))
-            MonoText("SOUND SCAPE", 4.4.sp, Color(0xAAF3EAD9))
-            Spacer(Modifier.height(7.dp))
+            Spacer(Modifier.height(4.dp))
             DotBar(
                 0.42f, Modifier.fillMaxWidth().height(4.dp), count = 26,
                 litColor = Color(0xFFF3EAD9), dimColor = Color(0x55F3EAD9), dotRadius = 1.dp
             )
-            Spacer(Modifier.height(2.dp))
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                MonoText("02:15", 4.2.sp, Color(0x99F3EAD9))
-                MonoText("05:10", 4.2.sp, Color(0x99F3EAD9))
-            }
             Spacer(Modifier.weight(1f))
             Row(
                 Modifier.fillMaxWidth().padding(bottom = 2.dp),
@@ -684,9 +601,6 @@ fun SmallTiles(modifier: Modifier, time: Float) {
             )
         }
         SmallTile {
-            DotMatrixText("21°", pitch = 1.9.dp, color = Palette.terra)
-        }
-        SmallTile {
             DotGlyph(
                 listOf(
                     "0001000", "0001000", "0001000", "1110111", "0001000", "0001000", "0001000"
@@ -718,10 +632,7 @@ fun MicroInteractionsCard(modifier: Modifier, time: Float) {
             .background(Palette.terra)
             .padding(12.dp)
     ) {
-        Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-            MonoText("MICRO INTERACTIONS", 6.sp, Color(0xFFF6EBDD))
-        }
-        Spacer(Modifier.height(4.dp))
+
         Row(Modifier.weight(1f)) {
             MicroCell("TAP", Modifier.weight(1f)) { tapAnim(time) }
             MicroCell("FOCUS", Modifier.weight(1f)) { focusAnim(time) }
@@ -739,8 +650,6 @@ private fun MicroCell(label: String, modifier: Modifier, anim: DrawScope.() -> U
         Box(Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
             Canvas(Modifier.size(42.dp)) { anim() }
         }
-        MonoText(label, 4.8.sp, Color(0xFFF6EBDD))
-        Spacer(Modifier.height(4.dp))
     }
 }
 

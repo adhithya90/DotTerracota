@@ -12,8 +12,8 @@ android {
         applicationId = "com.dotterracota"
         minSdk = 33
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "2.0"
     }
 
     buildTypes {
@@ -34,11 +34,9 @@ android {
 }
 
 dependencies {
-    val composeBom = platform("androidx.compose:compose-bom:2026.06.01")
-    implementation(composeBom)
+    implementation(project(":core"))
+    implementation(project(":dotterracota"))
+    implementation(project(":softmachine"))
     implementation("androidx.activity:activity-compose:1.12.4")
-    implementation("androidx.compose.foundation:foundation")
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.material3:material3")
 }

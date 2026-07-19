@@ -13,5 +13,8 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "DotTerracota"
+rootProject.name = "DesignLens"
 include(":app")
+include(":core")
+include(":dotterracota")
+include(":softmachine")

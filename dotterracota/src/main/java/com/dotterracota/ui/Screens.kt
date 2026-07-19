@@ -1,5 +1,9 @@
 package com.dotterracota.ui
 
+import com.designlens.core.MonoText
+import com.designlens.core.ShaderPanel
+import com.designlens.core.rememberTimeSeconds
+
 import android.view.HapticFeedbackConstants
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.animateFloatAsState
@@ -68,8 +72,9 @@ object Pages {
     const val COUNT = 12
 }
 
+/** The full Dot Terracota style: a 12-page horizontal pager. */
 @Composable
-fun App() {
+fun DotTerracotaStyle() {
     val pager = rememberPagerState { Pages.COUNT }
     Box(Modifier.fillMaxSize().background(Palette.pageBg)) {
         HorizontalPager(pager, Modifier.fillMaxSize()) { page ->
@@ -145,6 +150,37 @@ private fun ScreenScaffold(
                 Spacer(Modifier.height(13.dp))
                 content()
                 Spacer(Modifier.height(34.dp))
+            }
+        }
+    }
+}
+
+/**
+ * Live miniature of the style for the landing card: the hero headline over the
+ * planet, rendered at a small design width via the density-rescale trick.
+ */
+@Composable
+fun DotTerracotaPreview(modifier: Modifier = Modifier) {
+    BoxWithConstraints(modifier) {
+        val scale = maxWidth / 130.dp
+        val base = LocalDensity.current
+        CompositionLocalProvider(LocalDensity provides Density(base.density * scale, 1f)) {
+            Box(Modifier.fillMaxSize()) {
+                ShaderPanel(Shaders.HERO_BG, Modifier.fillMaxSize())
+                Column(Modifier.fillMaxSize().padding(12.dp)) {
+                    DotMatrixText(
+                        "DOT\nTERRACOTA",
+                        pitch = 1.9.dp,
+                        color = Color(0xFFF3E9DD),
+                        lineGapRows = 3,
+                        glow = true,
+                    )
+                    Spacer(Modifier.weight(1f))
+                    Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                        OrbitPlanet(Modifier.size(96.dp))
+                    }
+                    Spacer(Modifier.weight(1f))
+                }
             }
         }
     }

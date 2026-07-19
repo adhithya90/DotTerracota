@@ -1,5 +1,9 @@
 package com.dotterracota.ui
 
+import com.designlens.core.MonoText
+import com.designlens.core.ShaderPanel
+import com.designlens.core.rememberTimeSeconds
+
 import android.view.HapticFeedbackConstants
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable

@@ -1,5 +1,9 @@
 package com.dotterracota.ui
 
+import com.designlens.core.MonoText
+import com.designlens.core.ShaderPanel
+import com.designlens.core.rememberTimeSeconds
+
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
